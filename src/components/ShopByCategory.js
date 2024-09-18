@@ -14,7 +14,7 @@ const ShopByCategory = () => {
     { name: 'Mushrooms', className: 'mushrooms' },
   ];
 
-  const itemsPerPage = 4; // Show 4 items at a time
+  const itemsPerPage = 4; 
   const totalItems = items.length;
 
   const nextSlide = () => {
