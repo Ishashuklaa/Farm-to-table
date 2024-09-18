@@ -1,7 +1,7 @@
 
 import React from 'react';
 
-// Testimonial component to display individual testimonials
+
 const Testimonial = ({ text, author, rating }) => {
     return (
       <div className="testimonial">
