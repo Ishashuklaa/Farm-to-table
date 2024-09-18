@@ -72,9 +72,9 @@ body {
 }
 
 .logo-image {
-  width: 40px; /* Adjust size as needed */
-  height: auto; /* Maintain aspect ratio */
-  margin-right: 10px; /* Space between image and text */
+  width: 40px; 
+  height: auto; 
+  margin-right: 10px; 
 }
 
 .logo-text {
@@ -100,30 +100,6 @@ nav ul li {
 
 
 /* Hero Styles */
-/* .hero {
- background-image: url("https://i.pinimg.com/originals/cf/8a/39/cf8a390f95a9f078ca68131b0ba139e0.jpg");
- background-repeat: no-repeat;
- background-size: cover;
-  color: white;
-  padding: 50px;
-  text-align: center;
-  margin-bottom: 30px;
-  height: 300px;
-}
-
-.hero h1 {
-  font-size: 36px;
-  margin-bottom: 0px;
-  
-}
-.hero button {
-  background-color: white;
-  color: #4CAF50;
-  border: none;
-  padding: 10px 20px;
-  font-size: 18px;
-  cursor: pointer;
-} */
 
 .hero {
   background-image: url("https://i.pinimg.com/originals/cf/8a/39/cf8a390f95a9f078ca68131b0ba139e0.jpg");
@@ -133,24 +109,24 @@ nav ul li {
   text-align: center;
   margin-bottom: 30px;
   height: 470px;
-  position: relative; /* Set the hero section as relative for absolute positioning */
+  position: relative; 
 }
 
 .hero h1, .hero button, .hero p {
   position: absolute;
   left: 50%;
-  transform: translateX(-50%); /* Center the text horizontally */
+  transform: translateX(-50%); 
 }
 
 .hero h1 {
-  top: 45%; /* Adjust the position of the h1 */
+  top: 45%; 
   font-size: 36px;
 }
 .hero p{
   top: 58%;
 }
 .hero button {
-  top: 70%; /* Adjust the position of the button */
+  top: 70%; 
   background-color: white;
   color: #4c7faf;
   border: none;
@@ -190,71 +166,43 @@ nav ul li {
 }
 
 /* Testimonial Styles */
-/* .testimonials {
+
+
+
+ .testimonials-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  padding: 35px;
+  margin: 35px auto;
+  max-width: 1200px;
+}
+
+.testimonials-container h2 {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.testimonials {
   background-color: #f9f9f9;
-  padding: 30px;
-  margin-bottom: 30px;
+  padding: 35px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px; 
+  justify-content: center; 
 }
 
 .testimonial {
   font-style: italic;
   margin-bottom: 20px;
-}
+  flex: 1 1 calc(33.333% - 30px); 
+  box-sizing: border-box; 
+  padding: 25px; 
+  background-color: #fff; 
+  border-radius: 8px; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
 
-.testimonial .author {
-  font-weight: bold;
-} */
-
- /* .testimonials {
-  background-color: #f9f9f9;
-  padding: 30px;
-  margin-bottom: 30px;
-}
-
-.testimonial {
-  font-style: italic;
-  margin-bottom: 20px;
-}
-.testimonials h2{
-  padding-left: 40%;
-  text-decoration: underline;
-}
-
-.testimonial .author {
-  font-weight: bold;
-}
-
-
-.rating {
-  margin-top: 10px;
-}
-
-.star {
-  font-size: 1.2em;
-  color: #ccc; 
-}
-
-.star.filled {
-  color: #f39c12; 
-}  */
-
-
-/* .testimonials {
-  background-color: #f9f9f9;
-  padding: 30px;
-  margin-bottom: 30px;
-}
-
-.testimonial {
-  font-style: italic;
-  margin-bottom: 20px;
-}
-
-.testimonial .author {
-  font-weight: bold;
-}
-
-
+/* Rating Styles */
 .rating {
   margin-top: 10px;
 }
@@ -266,55 +214,6 @@ nav ul li {
 
 .star.filled {
   color: #f39c12;
-}
- */
-
- .testimonials-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Center all items horizontally */
-  padding: 35px;
-  margin: 35px auto;
-  max-width: 1200px;
-}
-
-.testimonials-container h2 {
-  text-align: center;
-  margin-bottom: 35px; /* Add space below the heading */
-}
-
-.testimonials {
-  background-color: #f9f9f9;
-  padding: 35px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 30px; /* Space between testimonials */
-  justify-content: center; /* Center testimonials horizontally */
-}
-
-.testimonial {
-  font-style: italic;
-  margin-bottom: 20px;
-  flex: 1 1 calc(33.333% - 30px); /* Adjust width to fit three in a row, accounting for gap */
-  box-sizing: border-box; /* Ensure padding/margin are included in the width */
-  padding: 25px; /* Add padding inside each testimonial */
-  background-color: #fff; /* Optional: add a background color to differentiate testimonials */
-  border-radius: 8px; /* Optional: add rounded corners */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: add subtle shadow for better visual separation */
-}
-
-/* Rating Styles */
-.rating {
-  margin-top: 10px;
-}
-
-.star {
-  font-size: 1.5em; /* Adjust the size of the stars */
-  color: #ccc; /* Unfilled star color */
-}
-
-.star.filled {
-  color: #f39c12; /* Filled star color */
 }
 
 
@@ -518,9 +417,9 @@ h1 {
 /* Circular item boxes */
 .farm-item-box {
   border: 2px solid #ddd;
-  border-radius: 50%; /* Make it a circle */
-  width: 200px;  /* Control the size of the circle */
-  height: 200px; /* Control the size of the circle */
+  border-radius: 50%; 
+  width: 200px;  
+  height: 200px; 
   background-color: #f8f8f8;
   text-align: center;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -532,7 +431,7 @@ h1 {
 }
 
 .farm-item-box:hover {
-  transform: scale(1.1); /* Slight zoom on hover */
+  transform: scale(1.1); 
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
 }
 
