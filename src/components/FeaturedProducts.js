@@ -15,7 +15,7 @@ const FeaturedProducts = () => {
     { name: "Cabbage", price: 20, image: "https://s3.amazonaws.com/com.niches.production/story_images/new_images/000/004/690/original/how-much-is-in-a-cabbage-1.jpg", className: 'cabbage' },
     { name: "Potato", price: 15, image: "https://wallpaperaccess.com/full/1986273.jpg", className: 'ladyfinger' },
     { name: "Avocado", price: 95, image: "https://minnetonkaorchards.com/wp-content/uploads/2022/09/Indoor-Avocado-Tree-SS-2031462932.jpg", className: 'avocado' },
-    // Add more products as needed
+   
   ];
 
   return (
