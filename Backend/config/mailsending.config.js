@@ -18,7 +18,7 @@ exports.mailsending = async(email,message)=>{
             from:"Farmer's Market",
             to:email,
             subject:"Congratulations on signing in ",
-            html:message
+            html:`<h1>${message}</h1>`
         });
         console.log("An email is sent to ", email);
     } catch (error) {

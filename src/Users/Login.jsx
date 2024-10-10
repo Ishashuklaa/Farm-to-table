@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Login.css';
-// import axios from 'axios';
+import axios from 'axios';
 import { NavLink } from 'react-router-dom';
 
 function Login() {
@@ -12,20 +12,20 @@ function Login() {
     e.preventDefault();
     const logindata = { email:email, password:password };
     
-    // try {
-    //   setLoading(true);  // Start spinner
-    //   const res = await axios.post('http://localhost:4000/v2/users/login', logindata, {
-    //     withCredentials: true,
-    //     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    //   });
-    //   console.log(res);
-    //   if(res.status === 200)
-    //   window.location.href = '/';
-    // } catch (error) {
-    //   console.log("An error occurred in login page", error);
-    // } finally {
-    //   setLoading(false);  // Stop spinner
-    // }
+    try {
+      setLoading(true);  // Start spinner
+      const res = await axios.post('http://localhost:4000/users/api/v2/login', logindata, {
+        withCredentials: true,
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      });
+      console.log(res);
+      if(res.status === 200)
+      window.location.href = '/';
+    } catch (error) {
+      console.log("An error occurred in login page", error);
+    } finally {
+      setLoading(false);  // Stop spinner
+    }
   };
 
   return (
@@ -61,7 +61,7 @@ function Login() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <button type="submit">Login</button>
+          <button type="submit" onClick={handleLogin}>Login</button>
 
           <button type="button" className="forgot-password" >
             <NavLink to='/forgotpassword'>

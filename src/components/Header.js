@@ -1,6 +1,7 @@
 import React from 'react';
-import { Heart, ShoppingCart, User } from 'lucide-react';
 import log from './logo1.png';
+import './Header.css'; // Import the CSS file
+import { Link } from 'react-router-dom'; // Correct import
 
 const Header = () => {
   return (
@@ -19,10 +20,13 @@ const Header = () => {
           <li>Contact Us</li>
         </ul>
       </nav>
-      <div className="icons">
-        <Heart />
-        <ShoppingCart />
-        <User />
+      <div className="auth-buttons">
+        <button className="login-button">
+          <Link to="/login">Login</Link>
+        </button>
+        <button className="signup-button">
+          <Link to="/signin">Signup</Link>
+        </button>
       </div>
     </header>
   );

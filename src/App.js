@@ -20,6 +20,8 @@ import ayush from './components/ayush.jpg'
 import nitish from './components/nitish.jpg'
 import './App.css';
 import Home from './components/Home.jsx';
+import Forgot from './Users/Password/Forgot.jsx';
+import ResetPassword from './Users/Password/ResetPassword.jsx';
 
 
 
@@ -31,6 +33,8 @@ const App = () => {
         <Route path='/' element={<Home/>}/>
         <Route path='/signin' element={<SignupForm />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/forgotpassword' element={<Forgot/>}/>
+        <Route path='/verifyotp' element={<ResetPassword/>}/>
       </Routes>
       
     </div>
