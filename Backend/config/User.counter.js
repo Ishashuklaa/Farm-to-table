@@ -1,4 +1,4 @@
-let customerCount = 34;  
+let customerCount = 37;  
 
 
 function generateCustomerId() {
