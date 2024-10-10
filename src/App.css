@@ -189,10 +189,7 @@ nav ul li {
   display: flex;
   flex-wrap: wrap;
   gap: 30px; 
-  justify-content: center; 
-}
-
-.testimonial {
+  justify-content: center;
   font-style: italic;
   margin-bottom: 20px;
   flex: 1 1 calc(33.333% - 30px); 
@@ -201,6 +198,7 @@ nav ul li {
   background-color: #fff; 
   border-radius: 8px; 
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+}
 
 /* Rating Styles */
 .rating {
