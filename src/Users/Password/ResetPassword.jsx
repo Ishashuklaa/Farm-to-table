@@ -26,7 +26,6 @@ const ResetPassword = () => {
     try {
       const response = await axios.post('http://localhost:4000/users/api/v2/verifying', urlEncodedData, {
         withCredentials: true,
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       });
       setMessage('Password successfully updated!');
     } catch (error) {

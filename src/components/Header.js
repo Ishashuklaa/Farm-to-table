@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import log from './logo1.png';
+import { Heart, ShoppingCart, User } from 'lucide-react'; // Icons
 import './Header.css'; // Import the CSS file
 import { Link } from 'react-router-dom'; // Correct import
 
-const Header = () => {
+const Header = ({ loggedin, setlogin }) => {
+
+  const handleLogout = () => {
+    setlogin(false); // Set loggedin to false on logout
+  };
+  // loggedin = true;
+
   return (
     <header className="header">
       <div className="logo-container">
@@ -20,13 +27,29 @@ const Header = () => {
           <li>Contact Us</li>
         </ul>
       </nav>
-      <div className="auth-buttons">
-        <button className="login-button">
-          <Link to="/login">Login</Link>
-        </button>
-        <button className="signup-button">
-          <Link to="/signin">Signup</Link>
-        </button>
+      
+      <div className="auth-section">
+        {loggedin ? (
+          // Render icons and signout button when logged in
+          <div className="user-icons">
+            <Heart className="icon" />
+            <ShoppingCart className="icon" />
+            <User className="icon" />
+            <button onClick={handleLogout} className="logout-button">
+              Sign Out
+            </button>
+          </div>
+        ) : (
+          // Render login and signup buttons when not logged in
+          <div className="auth-buttons">
+            <button className="login-button" >
+              <Link to="/login" >Login</Link>
+            </button>
+            <button className="signup-button">
+              <Link to="/signin">Signup</Link>
+            </button>
+          </div>
+        )}
       </div>
     </header>
   );

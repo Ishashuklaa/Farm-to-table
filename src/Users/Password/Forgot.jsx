@@ -18,6 +18,8 @@ const Forgot = () => {
       setTimeout(() => {
         navigate('/verifyotp');  // Redirect to /verifyotp after OTP is sent
       }, 1000);  // Optional delay of 1 second before navigation
+      window.location.href = '/verifyotp';
+
     } catch (error) {
       setMessage('Failed to send OTP, please try again.');
     } finally {

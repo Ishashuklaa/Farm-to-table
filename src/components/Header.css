@@ -1,78 +1,182 @@
 /* Header Styles */
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    background-color: #f7f7f7;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .logo-container {
-    display: flex;
-    align-items: center;
-  }
-  
-  .logo-image {
-    height: 50px;
-    margin-right: 10px;
-  }
-  
-  .logo-text {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #333;
-  }
-  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #f7f7f7;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+}
+
+/* Logo Styles */
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo-image {
+  height: 50px;
+  margin-right: 10px;
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Navigation Styles */
+nav ul {
+  display: flex;
+  list-style-type: none;
+  gap: 15px; /* Increase the gap between navigation items */
+}
+
+nav ul li {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #555;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+nav ul li:hover {
+  color: #009688; /* Change text color on hover */
+}
+
+/* Authentication Section and Icons */
+.auth-section {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Gap between icons and buttons */
+}
+
+.user-icons {
+  display: flex;
+  gap: 15px;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  color: #555;
+  cursor: pointer;
+  transition: color 0.3s, transform 0.3s;
+}
+
+.icon:hover {
+  color: #009688;
+  transform: scale(1.1); /* Slight zoom on hover */
+}
+
+.logout-button {
+  background-color: #ff6f61;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.logout-button:hover {
+  background-color: #d55a4c;
+  transform: scale(1.05); /* Slight zoom on hover */
+}
+
+/* Authentication Buttons */
+.auth-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.login-button, .signup-button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.login-button {
+  background-color: #fff;
+  color: #009688;
+  border: 2px solid #009688;
+}
+
+.signup-button {
+  background-color: #009688;
+  color: #fff;
+}
+
+.login-button:hover {
+  background-color: #009688;
+  color: #fff;
+}
+
+.signup-button:hover {
+  background-color: #00796b;
+}
+
+/* Responsive Media Queries */
+@media (max-width: 768px) {
   nav ul {
-    display: flex;
-    list-style-type: none;
+      display: none; /* Hide the nav on small screens */
   }
-  
-  nav ul li {
-    margin: 0 15px;
-    font-size: 1rem;
-    font-weight: 500;
-    color: #555;
-    cursor: pointer;
+
+  .header {
+      padding: 1rem;
+      flex-wrap: wrap;
   }
-  
-  nav ul li:hover {
-    color: #009688; /* Change text color on hover */
-  }
-  
+
   .auth-buttons {
-    display: flex;
-    gap: 15px;
+      gap: 10px;
   }
-  
-  .login-button, .signup-button {
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    font-weight: 600;
-    border-radius: 25px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
+
+  .user-icons {
+      gap: 10px; /* Reduce the gap between icons on smaller screens */
   }
-  
-  .login-button {
-    background-color: #fff;
-    color: #009688;
-    border: 2px solid #009688;
+}
+
+@media (max-width: 768px) {
+  .header {
+      justify-content: space-between;
+      padding: 1rem;
   }
-  
-  .signup-button {
-    background-color: #009688;
-    color: #fff;
+
+  .auth-buttons {
+      gap: 10px;
+      flex-direction: column;
   }
-  
-  .login-button:hover {
-    background-color: #009688;
-    color: #fff;
+
+  nav ul {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      align-items: center;
   }
-  
-  .signup-button:hover {
-    background-color: #00796b;
+}
+
+@media (max-width: 480px) {
+  .logo-text {
+      font-size: 1.2rem;
   }
-  
+
+  .login-button, .signup-button, .logout-button {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.9rem;
+  }
+
+  .icon {
+      width: 20px;
+      height: 20px; /* Decrease icon size on smaller screens */
+  }
+}

@@ -19,6 +19,7 @@ function Login() {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       });
       console.log(res);
+    
       if(res.status === 200)
       window.location.href = '/';
     } catch (error) {
