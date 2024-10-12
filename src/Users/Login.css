@@ -1,17 +1,18 @@
 /* Main container for the login component */
-body{
+/* body{
   background-color: rgb(191, 191, 205);
-}
+} */
 
 .login-container {
     display: flex;
     max-width: 900px;
     width: 100%;
-    background-color: #fff;
+    background-color: #e1dddd;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     margin: 12rem auto;
+    
     
   }
   
@@ -151,6 +152,8 @@ body{
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
+
+  
   
   
   

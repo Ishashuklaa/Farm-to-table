@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Heart,  ShoppingCart, User } from 'lucide-react';
 
 
@@ -23,10 +23,11 @@ import '../App.css';
 
 
 const Home = () => {
+  const[loggedin , setlogin] = useState(false);
   return (
     <div className="app">
  
-      <Header/>
+      <Header loggedin={loggedin} setlogin={setlogin} />
       <Hero />
       <SaleOfTheMonth />
       <ShopByCategory />

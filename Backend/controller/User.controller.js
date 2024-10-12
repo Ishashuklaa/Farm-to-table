@@ -19,7 +19,7 @@ exports.createUser = async (req, res) => {
         }
 
         const customer_id = generateCustomerId();
-        console.log(customerCount);
+        console.log(getCustomerCount);
 
 
         // Hash the password before storing it
@@ -100,6 +100,11 @@ exports.loginUser = async (req, res) => {
         });
     }
 };
+// Function to generate a 6-digit OTP
+const generateotp = () => {
+    return Math.floor(100000 + Math.random() * 900000);  // Generates a random 6-digit integer
+};
+
 exports.forgotpassword = async (req, res) => {
     try {
         const { email } = req.body;
@@ -120,31 +125,81 @@ exports.forgotpassword = async (req, res) => {
         }
 
         const otp = generateotp();
-        const res = await mailsending(email , otp);
-       
+        const response = await mailsending(email, otp);
+
 
         const otpquery = 'INSERT INTO OTP(otp, CUST_ID, created_at, expires_at, isVerified) VALUES (?, ?, ?, ?, ?)';
-        const expires_at = new Date(Date.now() + 10 * 60 * 1000);  
+        const expires_at = new Date(Date.now() + 10 * 60 * 1000);
 
         const [result] = await db.execute(otpquery, [otp, user[0].customer_id, new Date(), expires_at, false]);
-        if(result.length===0){
+        if (result.length === 0) {
             return res.status(400).json({
-                message:"An error occured in this "
+                message: "An error occured in this "
             });
         }
-        return res.status(200).json({
-            message: "OTP sent successfully"
-        });
+        const token = await jwt.sign({ customer_id: user[0].customer_id }, process.env.SECRET_KEY, { expiresIn: '1h' });
+        console.log(token);
+        const option = {
+            expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+            httpOnly: true,
+            secure : true,
+            samesite : "none"
+        };
+
+        // Set the token in a cookie
+        // ankit's 5 minutes wasted here - koi nhi bhai tere liye 5 min kurbaan
+        res.cookie("token", token, option);
+
+        res.status(200).send({token})
 
     } catch (error) {
         return res.status(500).json({
-            message: "Internal server error",
+            message: "Internal server error ankit",
             error: error.message
         });
     }
 };
 
-// Function to generate a 6-digit OTP
-const generateotp = () => {
-    return Math.floor(100000 + Math.random() * 900000);  // Generates a random 6-digit integer
+exports.validateOtp = async (req, res) => {
+    try {
+        const { otp, newpassword } = req.body;
+        const user = req.user;
+        if (!otp || !user || !newpassword) {
+            return res.status(401).json({
+                message: "Some credentials are missing"
+            });
+        }
+
+        const db = await setupConnection();
+        const query = 'SELECT * FROM OTP WHERE CUST_ID = ?';
+        const [result] = await db.execute(query, [user.customer_id]);
+
+        if (result.length === 0) {
+            return res.status(401).json({
+                message: "The user is not verified"
+            });
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(newpassword, salt);
+        const newQuery = 'UPDATE Customer SET password = ? WHERE email = ?';
+        const [newResult] = await db.execute(newQuery, [hashedPassword, user.email]);
+
+        if (newResult.affectedRows === 0) {
+            return res.status(401).json({
+                message: "The user's password is not updated"
+            });
+        }
+
+        return res.status(200).json({
+            message: "The user is verified",
+            user: user
+        });
+
+    } catch (error) {
+        return res.status(400).json({
+            message: "The user's OTP is not verified and the password is not updated",
+            error: error.message
+        });
+    }
 };
