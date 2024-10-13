@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import log from './logo1.png';
 import { Heart, ShoppingCart, User } from 'lucide-react'; // Icons
 import './Header.css'; // Import the CSS file
 import { Link } from 'react-router-dom'; // Correct import
+import UserContext from '../Users/Context/UserContext';
 
-const Header = ({ loggedin, setlogin }) => {
+const Header = () => {
+  const {loggedin , setLoggedin} = useContext(UserContext);
 
   const handleLogout = () => {
-    setlogin(false); // Set loggedin to false on logout
+    setLoggedin(false); // Set loggedin to false on logout
   };
-  // loggedin = true;
 
   return (
     <header className="header">
@@ -32,9 +33,15 @@ const Header = ({ loggedin, setlogin }) => {
         {loggedin ? (
           // Render icons and signout button when logged in
           <div className="user-icons">
+
             <Heart className="icon" />
+            
             <ShoppingCart className="icon" />
+
+            <Link to='/UserProfile'>
             <User className="icon" />
+            </Link>
+
             <button onClick={handleLogout} className="logout-button">
               Sign Out
             </button>

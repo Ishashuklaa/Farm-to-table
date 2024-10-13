@@ -142,15 +142,15 @@ exports.forgotpassword = async (req, res) => {
         const option = {
             expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
             httpOnly: true,
-            secure : true,
-            samesite : "none"
+            secure: true,
+            samesite: "none"
         };
 
         // Set the token in a cookie
         // ankit's 5 minutes wasted here - koi nhi bhai tere liye 5 min kurbaan
         res.cookie("token", token, option);
 
-        res.status(200).send({token})
+        return res.status(200).send({ token })
 
     } catch (error) {
         return res.status(500).json({
@@ -202,4 +202,131 @@ exports.validateOtp = async (req, res) => {
             error: error.message
         });
     }
+}
+
+exports.createAddress = async (req, res) => {
+    try {
+        const userId = req.user.customer_id;
+        const { street, city, state, postal_code, country } = req.body;
+
+        const addressId = `ADDR${Date.now()}`; // Example: "ADDR" followed by the current timestamp
+
+        // SQL query to insert the new address
+        const query = `
+        INSERT INTO Address (address_id, customer_id, street, city, state, postal_code, country)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+      `;
+        const db = await setupConnection();
+        // Execute the query
+        await db.execute(query, [addressId, userId, street, city, state, postal_code, country]);
+
+        // Send a success response
+        return res.status(201).json({ message: 'Address created successfully', addressId });
+    } catch (error) {
+        console.error('Error occurred while creating address:', error);
+        return res.status(500).json({ message: 'Error occurred while creating address for the user' });
+    }
 };
+
+
+exports.getUser = async (req, res) => {
+    try {
+      const user = req.user;
+      if (!user) {
+        return res.status(400).json({
+          message: "The middleware is not working"
+        });
+      }
+  
+      const query = `
+        SELECT c.customer_id, c.first_name, c.last_name , c.email , c.phone, c.profile_image, 
+               a.street, a.city, a.country, a.state, a.postal_code
+        FROM Customer AS c
+        JOIN Address AS a ON c.customer_id = a.customer_id
+        WHERE c.customer_id = ?
+      `;
+  
+      const db = await setupConnection();
+      const [result] = await db.execute(query, [user.customer_id]);
+  
+      if (result.length === 0) {
+        return res.status(400).json({
+          message: "The address is not saved"
+        });
+      }
+  
+      // Return the merged user data
+      return res.status(200).json({
+        user: result[0]
+      });
+  
+    } catch (error) {
+      console.error("Error occurred while fetching the user data:", error);
+      return res.status(500).json({
+        message: "Error occurred while fetching the user data"
+      });
+    }
+  };
+
+  exports.updateUser = async (req, res) => {
+    try {
+      const user = req.user;
+      const { firstName, lastName, email, phone, profileImage, street, city, country, state, postalCode } = req.body;
+  
+      // Log the parameters fetched from req.body
+      console.log('Request Body Parameters:', {
+        firstName,
+        lastName,
+        email,
+        phone,
+        profileImage,
+        street,
+        city,
+        country,
+        state,
+        postalCode
+      });
+  
+      if (!user) {
+        return res.status(400).json({
+          message: "The middleware is not working"
+        });
+      }
+  
+      const updateCustomerQuery = `
+        UPDATE Customer 
+        SET first_name = ?, last_name = ?, email = ?, phone = ?, profile_image = ? 
+        WHERE customer_id = ?
+      `;
+  
+      const updateAddressQuery = `
+        UPDATE Address 
+        SET street = ?, city = ?, country = ?, state = ?, postal_code = ? 
+        WHERE customer_id = ?
+      `;  
+      const db = await setupConnection();
+  
+      // Start a transaction
+      await db.beginTransaction();
+  
+      // Update Customer table
+      await db.execute(updateCustomerQuery, [firstName, lastName, email, phone, profileImage, user.customer_id]);
+  
+      // Update Address table
+      await db.execute(updateAddressQuery, [street, city, country, state, postalCode, user.customer_id]);
+  
+      // Commit the transaction
+      await db.commit();
+  
+      return res.status(200).json({
+        message: "User and address data updated successfully"
+      });
+    } catch (error) {
+      console.error("Error occurred while updating the user data:", error);
+  
+      return res.status(500).json({
+        message: "Error occurred while updating the user data"
+      });
+    }
+  };
+  

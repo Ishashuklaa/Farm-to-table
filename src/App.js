@@ -1,43 +1,28 @@
 import React from 'react';
-import { Heart,ShoppingCart, User } from 'lucide-react';
-
-
-import { Route, Routes } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import SignupForm from './Users/Signup.jsx';
 import Login from './Users/Login.jsx';
-import Header from './components/Header.js';
-import Hero from './components/Hero.js';
-import SaleOfTheMonth from './components/SaleOfTheMonth.js';
-import ShopByCategory from './components/ShopByCategory.js';
-import FeaturedProducts from './components/FeaturedProducts.js';
-import Testimonial from './components/Testimonials.js';
-import Footer from './components/Footer.js';
-import TeamMember from './components/TeamMember.js';
-import Prakash  from './components/prakash.jpg'
-import isha from  './components/ishaaa.jpg'
-import tisha from './components/tisha.jpg'
-import ayush from './components/ayush.jpg'
-import nitish from './components/nitish.jpg'
-import './App.css';
 import Home from './components/Home.jsx';
 import Forgot from './Users/Password/Forgot.jsx';
 import ResetPassword from './Users/Password/ResetPassword.jsx';
-
-
-
+import UserContextProvider from './Users/Context/UserContextProvider'; // Import the provider
+import './App.css';
+import Profile from './Users/Profile.jsx';
 
 const App = () => {
   return (
-    <div className="app">
-      <Routes>
-        <Route path='/' element={<Home/>}/>
-        <Route path='/signin' element={<SignupForm />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/forgotpassword' element={<Forgot/>}/>
-        <Route path='/verifyotp' element={<ResetPassword/>}/>
-      </Routes>
-      
-    </div>
+    <UserContextProvider> {/* Wrapping the app with UserContextProvider */}
+      <div className="app">
+        <Routes>
+          <Route path='/' element={<Home/>}/>
+          <Route path='/signin' element={<SignupForm />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/forgotpassword' element={<Forgot/>}/>
+          <Route path='/verifyotp' element={<ResetPassword/>}/>
+          <Route path='/UserProfile' element={<Profile/>}/>
+        </Routes>
+      </div>
+    </UserContextProvider>
   );
 };
 
