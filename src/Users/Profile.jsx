@@ -12,63 +12,61 @@ const Profile = () => {
     phone: '',
     street: '',
     city: '',
-    zipCode: '',
+    postalCode: '',
     country: '',
   });
   const [loading, setLoading] = useState(true);
 
   // Function to fetch user data from API
-  // Function to fetch user data from API
-const fetchUserData = async () => {
-  setLoading(true);
-  try {
-    console.log("The user is fetching data");
-    const response = await axios.get('http://localhost:4000/users/api/v2/GetUser', {
-      withCredentials: true, // Include credentials in the request
-    });
-    setUserData(response.data.user);
-    // Populate form data with user data
-    setFormData({
-      firstName: response.data.user.first_name || '',
-      lastName: response.data.user.last_name || '',
-      email: response.data.user.email || '',
-      phone: response.data.user.phone || '',
-      street: response.data.user.street || '',
-      city: response.data.user.city || '',
-      zipCode: response.data.user.postal_code || '',
-      country: response.data.user.country || '',
-      state:response.data.user.state || '',
-      profileImage:null 
-    });
-  } catch (error) {
-    console.error('Error fetching user data:', error);
-  } finally {
-    setLoading(false);
-  }
-};
-useEffect(() => {
-  fetchUserData();
-}, []);
+  const fetchUserData = async () => {
+    setLoading(true);
+    try {
+      console.log("The user is fetching data");
+      const response = await axios.get('http://localhost:4000/users/api/v2/GetUser', {
+        withCredentials: true, // Include credentials in the request
+      });
+      setUserData(response.data.user);
+      // Populate form data with user data
+      setFormData({
+        firstName: response.data.user.first_name || '',
+        lastName: response.data.user.last_name || '',
+        email: response.data.user.email || '',
+        phone: response.data.user.phone || '',
+        street: response.data.user.street || '',
+        city: response.data.user.city || '',
+        postalCode: response.data.user.postal_code || '',
+        country: response.data.user.country || '',
+        state: response.data.user.state || '',
+        profileImage: response.data.user.profile_image || null,
+      });
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-// Handle Save Changes
-const handleSaveChanges = async (e) => {
-  e.preventDefault();
-  setLoading(true);
-  formData.profileImage = null;
-  console.log('Form data being sent:', formData); // Log the form data
-  try {
-    await axios.post('http://localhost:4000/users/api/v2/updateUser', formData, {
-      withCredentials: true,
-    });
-    await fetchUserData(); // Re-fetch data after saving changes
-  } catch (error) {
-    console.error('Error saving changes:', error);
-  } finally {
-    setLoading(false);
-  }
-};
+  useEffect(() => {
+    fetchUserData();
+  }, []);
 
-
+  // Handle Save Changes
+  const handleSaveChanges = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+  
+    console.log('Form data being sent:', formData); // Log the form data
+    try {
+      await axios.post('http://localhost:4000/users/api/v2/updateUser', formData, {
+        withCredentials: true,
+      });
+      await fetchUserData(); // Re-fetch data after saving changes
+    } catch (error) {
+      console.error('Error saving changes:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Handle form input changes
   const handleInputChange = (e) => {
@@ -80,19 +78,16 @@ const handleSaveChanges = async (e) => {
   };
 
   // Render placeholders if loading
-  // Render placeholders if loading
-if (loading) {
-  return (
-    <div className="loading-container">
-      <div className="loading-spinner"></div>
-      <p className="loading-text">Loading...</p>
-     
-      <p>Name: [Placeholder]</p>
-      <p>Email: [Placeholder]</p>
-    </div>
-  );
-}
-
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="loading-spinner"></div>
+        <p className="loading-text">Loading...</p>
+        <p>Name: [Placeholder]</p>
+        <p>Email: [Placeholder]</p>
+      </div>
+    );
+  }
 
   return (
     <div className="profile-container">
@@ -114,7 +109,7 @@ if (loading) {
 
         <div className="profile-picture-container">
           <img
-            src={userProfileImage}
+            src={formData.profileImage || userProfileImage}
             alt="Profile"
             className="profile-picture"
           />
@@ -191,27 +186,27 @@ if (loading) {
                 />
               </div>
               <div className="profile-form-group">
-                <label htmlFor="zipCode">Zip Code</label>
+                <label htmlFor="postalCode">Postal Code</label>
                 <input
                   type="text"
                   id="postalCode"
                   name="postalCode"
-                  value={formData.zipCode}
+                  value={formData.postalCode}
                   onChange={handleInputChange}
                 />
               </div>
               <div className="profile-form-group">
-                <label htmlFor="zipCode">State</label>
+                <label htmlFor="state">State</label>
                 <input
                   type="text"
                   id="state"
                   name="state"
-                  value={userData.state}
+                  value={formData.state}
                   onChange={handleInputChange}
                 />
               </div>
               <div className="profile-form-group">
-                <label htmlFor="company">Country </label>
+                <label htmlFor="country">Country</label>
                 <input
                   type="text"
                   id="country"
@@ -222,7 +217,7 @@ if (loading) {
               </div>
             </div>
           </section>
-          <button type="submit" className="profile-btn-save" onClick={handleSaveChanges}>Save Changes</button>
+          <button type="submit" className="profile-btn-save">Save Changes</button>
         </form>
       </main>
     </div>

@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const setupConnection = require('../config/database.config');
 const { generateCustomerId, getCustomerCount } = require('../config/User.counter');
 const { mailsending } = require('../config/mailsending.config');
+const { uploadOnCloudinary } = require('../config/cloudinary.config');
 require('dotenv').config();
 
 
@@ -269,11 +270,11 @@ exports.getUser = async (req, res) => {
   };
 
   exports.updateUser = async (req, res) => {
+    let db;
     try {
       const user = req.user;
       const { firstName, lastName, email, phone, profileImage, street, city, country, state, postalCode } = req.body;
-  
-      // Log the parameters fetched from req.body
+   
       console.log('Request Body Parameters:', {
         firstName,
         lastName,
@@ -286,47 +287,83 @@ exports.getUser = async (req, res) => {
         state,
         postalCode
       });
-  
+   
       if (!user) {
         return res.status(400).json({
           message: "The middleware is not working"
         });
       }
-  
+   
       const updateCustomerQuery = `
         UPDATE Customer 
         SET first_name = ?, last_name = ?, email = ?, phone = ?, profile_image = ? 
         WHERE customer_id = ?
       `;
-  
+   
       const updateAddressQuery = `
         UPDATE Address 
         SET street = ?, city = ?, country = ?, state = ?, postal_code = ? 
         WHERE customer_id = ?
-      `;  
-      const db = await setupConnection();
-  
-      // Start a transaction
-      await db.beginTransaction();
-  
+      `;
+   
+      db = await setupConnection();
+      await db.beginTransaction(); // Start a transaction
+   
       // Update Customer table
       await db.execute(updateCustomerQuery, [firstName, lastName, email, phone, profileImage, user.customer_id]);
-  
+   
       // Update Address table
       await db.execute(updateAddressQuery, [street, city, country, state, postalCode, user.customer_id]);
-  
-      // Commit the transaction
-      await db.commit();
-  
+   
+      await db.commit(); // Commit the transaction
+   
       return res.status(200).json({
         message: "User and address data updated successfully"
       });
     } catch (error) {
+      if (db) {
+        await db.rollback(); // Rollback the transaction on error
+      }
       console.error("Error occurred while updating the user data:", error);
-  
       return res.status(500).json({
         message: "Error occurred while updating the user data"
       });
     }
-  };
-  
+   };
+   
+
+exports.setImageForProfile = async (req, res) => {
+  try {
+    const user = req.user;
+    const imagePath = req.file;
+
+    if (!user || !imagePath) {
+      return res.status(400).json({
+        message: "An error occurred while fetching data"
+      });
+    }
+
+    const query = 'UPDATE Customer SET profile_image = ? WHERE customer_id = ?';
+    const url = await uploadOnCloudinary(imagePath.path); // Use imagePath.path for the file path
+    const db = await setupConnection();
+
+    // Execute the query and get the result
+    const [result] = await db.execute(query, [url, user.customer_id]);
+
+    if (result.affectedRows === 0) {
+      return res.status(400).json({
+        message: "An error occurred while storing data in the Customer table"
+      });
+    }
+
+    return res.status(200).json({
+      message: "User profile image uploaded successfully"
+    });
+
+  } catch (error) {
+    return res.status(400).json({
+      message: "An error occurred while setting the user's picture",
+      error: error.message
+    });
+  }
+};
